@@ -1,11 +1,11 @@
-//Proprama que solicita un numero y estable si es par o impar
+//Proprama que almacena y lee un documento no binario para almacenar Alumnos
 ////Autor: Erick Bran
-//Fecha: 24/07/2021
+//Fecha: 15/10/2021
 #include <iostream>
 #include <string.h>
 #include <fstream>
 #include "CppConsoleTable.hpp"
-
+#include <stdlib.h>
 using namespace std;
 
 //VARIABLES GLOBALES
@@ -114,8 +114,14 @@ void agregarStructAlumno(){
 	cin >> alm.Seccion;
 	cout << "Ingrese Ciclo del Alumno" << endl;
 	cin >> alm.Ciclo;
-	cout << "Ingrese Estado del Alumno" << endl;
+	
+	EstadoVer:
+	cout << "Ingrese Estado del Alumno. Solo puede ser A (Aprobado) o R (Reprobado)" << endl;
 	cin >> alm.Estado;
+	if((strcmp(alm.Estado, "A") != 0) && (strcmp(alm.Estado, "R") != 0)){
+		cout << "Solo puede ser A (Aprobado) o R (Reprobado). Ingrese nuevamente el Estado correctamente." << endl;
+		goto EstadoVer; 
+	}
 	cout << "Ingrese Promedio del Alumno" << endl;
 	cin >> alm.Promedio;
 	
@@ -378,27 +384,36 @@ void editarDatoAlumnoStruct(){
 int main(){	
 	crearIfExiste();
 	int numMenu;
-	cout << "--------- Menu ---------" << endl;
-	cout << "---1. Agregar Alumno----" << endl;
-	cout << "---2. Buscar Alumno-----" << endl;
-	cout << "---3. Listar Alumno-----" << endl;
-	cout << "---4. Modificar Alumno--" << endl;
-	cin >> numMenu;
-	switch(numMenu){
-		case 1:
-			agregarStructAlumno();
-			break;
+	string continuaUsuario = "";	
+	while(continuaUsuario != "n"){
+		cout << "--------- Menu ---------" << endl;
+		cout << "---1. Agregar Alumno----" << endl;
+		cout << "---2. Buscar Alumnos-----" << endl;
+		cout << "---3. Listar Alumnos-----" << endl;
+		cout << "---4. Modificar Alumno--" << endl;
+		cin >> numMenu;
+		switch(numMenu){
+			case 1:
+				agregarStructAlumno();
+				recorrerAlumnosDocumento();
+				break;
+			
+			case 2:
+				buscarAlumnosDocumento();
+				break;
+			case 3:
+				recorrerAlumnosDocumento();
+				break;
+			case 4:
+				editarDatoAlumnoStruct();
+				break;
+		}
 		
-		case 2:
-			buscarAlumnosDocumento();
-			break;
-		case 3:
-			recorrerAlumnosDocumento();
-			break;
-		case 4:
-			editarDatoAlumnoStruct();
-			break;
-	}	
+		cout << "Desea continuar realizacion calculos? (s/n)" << endl;
+		cin >> continuaUsuario;		
+		system ("CLS");
+			
+	}
 
 }
 
